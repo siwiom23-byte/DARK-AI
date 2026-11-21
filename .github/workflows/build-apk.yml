@@ -1,3 +1,4 @@
+
 name: Build DARK AI APK
 
 on:
@@ -6,14 +7,15 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Download project
+      - name: Download repository
         uses: actions/checkout@v4
 
-      - name: Extract ZIP
+      - name: Extract DARK AI project
         run: |
           unzip -q DARK_AI_Android_Starter.zip -d source
-          ls -R source
+          ls -la source/DARK_AI_Android_Starter
 
       - name: Set up Java
         uses: actions/setup-java@v4
@@ -21,24 +23,24 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-
-      -       - name: Set up Android
+      - name: Set up Android SDK
         uses: android-actions/setup-android@v3
         with:
-          packages: 'platform-tools platforms;android-35 build-tools;35.0.0'
-      
-      
+          packages: |
+            platform-tools
+            platforms;android-35
+            build-tools;35.0.0
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.9'
 
-      - name: Build APK
+      - name: Build DARK AI APK
         working-directory: source/DARK_AI_Android_Starter
         run: gradle assembleDebug
 
-      - name: Save APK
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: DARK-AI-APK
