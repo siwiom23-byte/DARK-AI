@@ -9,34 +9,35 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Extract DARK AI project
+      - name: Extract project
         run: |
           unzip -q DARK_AI_Android_Starter.zip -d source
           ls -la source/DARK_AI_Android_Starter
 
-      - name: Set up Java
+      - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '17'
 
-      - name: Set up Android SDK
+      - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Install Android packages
+      - name: Install SDK packages
         run: |
-          yes | sdkmanager --licenses
-          sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0"
+          sdkmanager --install "platform-tools"
+          sdkmanager --install "platforms;android-35"
+          sdkmanager --install "build-tools;35.0.0"
 
-      - name: Set up Gradle
+      - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.9'
 
-      - name: Build DARK AI
+      - name: Build APK
         working-directory: source/DARK_AI_Android_Starter
         run: gradle assembleDebug
 
